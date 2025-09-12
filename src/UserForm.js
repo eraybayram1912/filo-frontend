@@ -16,8 +16,8 @@ export default function UserForm() {
   const [step, setStep] = useState(0);
   const fileInputRef = useRef(null);
 
-  // Backend URL (Render için)
-  const API_URL = "https://filo-backend-3jx9.onrender.com";
+  // Backend URL (Environment üzerinden)
+  const API_URL = process.env.REACT_APP_API_URL;
 
   // Soruları çek
   useEffect(() => {
@@ -39,9 +39,7 @@ export default function UserForm() {
   useEffect(() => {
     if (!qrAcik) {
       if (controlsRef.current) {
-        try {
-          controlsRef.current.stop();
-        } catch (_) {}
+        try { controlsRef.current.stop(); } catch (_) {}
         controlsRef.current = null;
       }
       return;
@@ -53,13 +51,8 @@ export default function UserForm() {
     (async () => {
       try {
         const devices = await BrowserQRCodeReader.listVideoInputDevices();
-        const back = devices.find((d) =>
-          /back|rear|environment/i.test(d.label)
-        );
-        const deviceId =
-          back?.deviceId ||
-          devices[devices.length - 1]?.deviceId ||
-          undefined;
+        const back = devices.find((d) => /back|rear|environment/i.test(d.label));
+        const deviceId = back?.deviceId || devices[devices.length - 1]?.deviceId || undefined;
 
         readerRef.current.decodeFromVideoDevice(
           deviceId,
@@ -74,9 +67,7 @@ export default function UserForm() {
         );
       } catch (e) {
         console.error("QR başlatma hatası:", e);
-        alert(
-          "Kamera açılırken bir sorun oluştu. Lütfen izin verdiğinizden emin olun."
-        );
+        alert("Kamera açılırken bir sorun oluştu. Lütfen izin verdiğinizden emin olun.");
         setQrAcik(false);
       }
     })();
@@ -84,9 +75,7 @@ export default function UserForm() {
     return () => {
       stopped = true;
       if (controlsRef.current) {
-        try {
-          controlsRef.current.stop();
-        } catch (_) {}
+        try { controlsRef.current.stop(); } catch (_) {}
         controlsRef.current = null;
       }
     };

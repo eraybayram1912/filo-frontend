@@ -18,25 +18,28 @@ export default function AdminPanel() {
   });
   const [duzenlenenSoru, setDuzenlenenSoru] = useState(null);
 
+  // Backend URL (Environment üzerinden)
+  const API_URL = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     fetchRaporlar();
     fetchSorular();
   }, []);
 
   async function fetchRaporlar() {
-    const res = await fetch("http://localhost:5000/api/kontroller");
+    const res = await fetch(`${API_URL}/api/kontroller`);
     const data = await res.json();
     setRaporlar(data);
   }
 
   async function fetchSorular() {
-    const res = await fetch("http://localhost:5000/api/sorular");
+    const res = await fetch(`${API_URL}/api/sorular`);
     const data = await res.json();
     setSorular(data);
   }
 
   async function soruEkle() {
-    const res = await fetch("http://localhost:5000/api/sorular", {
+    const res = await fetch(`${API_URL}/api/sorular`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(yeniSoru)
@@ -49,12 +52,12 @@ export default function AdminPanel() {
 
   async function soruSil(id) {
     if (!window.confirm("Bu soruyu silmek istediğine emin misin?")) return;
-    await fetch(`http://localhost:5000/api/sorular/${id}`, { method: "DELETE" });
+    await fetch(`${API_URL}/api/sorular/${id}`, { method: "DELETE" });
     fetchSorular();
   }
 
   async function soruGuncelle() {
-    const res = await fetch(`http://localhost:5000/api/sorular/${duzenlenenSoru.id}`, {
+    const res = await fetch(`${API_URL}/api/sorular/${duzenlenenSoru.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(duzenlenenSoru)
