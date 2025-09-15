@@ -283,10 +283,10 @@ export default function AdminPanel() {
                       <Avatar
                         key={idx}
                         alt={`Foto ${idx + 1}`}
-                        src={`http://localhost:5000${url}`}
+                        src={`${process.env.REACT_APP_API_URL}${url}`}
                         sx={{ width: 56, height: 56, marginRight: 1 }}
                         component="a"
-                        href={`http://localhost:5000${url}`}
+                        href={`${process.env.REACT_APP_API_URL}${url}`}
                         target="_blank"
                       />
                     ))}
